@@ -6,21 +6,21 @@
 /*   By: pau <pau@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 17:53:53 by pramos            #+#    #+#             */
-/*   Updated: 2024/11/11 22:04:21 by pau              ###   ########.fr       */
+/*   Updated: 2025/02/17 16:02:06 by pau              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-void	free_list(t_image *img)
+void	free_list(t_game *game)
 {
-	if (img->player)
-		free(img->player);
-	if(img->ray)
-		free(img->ray);
-	mlx_clear_window(img->mlx, img->mlx_win);
-	mlx_destroy_window(img->mlx, img->mlx_win);
-	free(img);
+	mlx_clear_window(game->img->mlx, game->img->mlx_win);
+	mlx_destroy_window(game->img->mlx, game->img->mlx_win);
+	free(game->img);
+	free(game->ply);
+	free(game->map);
+	free(game->ray);
+	free(game->buffer_data);
 	exit(0);
 }
 
