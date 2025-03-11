@@ -6,82 +6,74 @@
 /*   By: pau <pau@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 20:40:31 by pau               #+#    #+#             */
-/*   Updated: 2025/03/09 12:49:20 by pau              ###   ########.fr       */
+/*   Updated: 2025/03/11 20:43:32 by pau              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3d.h"
+#include "../inc/cub3d.h"
 
-void	clean_game(t_data *data)
+void	clean_game(t_game *game)
 {
-	if (data->file_data.file_cpy)
-		free_array(data->file_data.file_cpy);
-	if (data->map)
-		free_array(data->map);
-	if (data->dmap)
-		free_array(data->dmap);
-	free_info(data);
+	if (game->file_data.file_cpy)
+		free_array(game->file_data.file_cpy);
+	if (game->map)
+		free_array(game->map);
+	if (game->dmap)
+		free_array(game->dmap);
+	free_info(game);
 }
 
-void	game_error(t_data *data, char *error)
+void	game_error(t_game *game, char *error)
 {
 	ft_printf(error);
-	clean_game(data);
-	// destroy_images(data);
-	// if (data->win)
-	// 	mlx_destroy_window(data->mlx, data->win);
-	// if (data->mlx)
-	// {
-	// 	mlx_destroy_display(data->mlx);
-	// 	free(data->mlx);
-	// }
+	clean_game(game);
 	exit(1);
 }
 
-static int	init_game(t_data *data)
+static int	init_game(t_game *game)
 {
-	init_cameraplane(data);
-	data->mlx = mlx_init();
-	if (!data->mlx)
+	init_cameraplane(game);
+	game->mlx = mlx_init();
+	if (!game->mlx)
 		return (0);
-	data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cube3D");
-	if (data->win == NULL)
+	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "Cube3D");
+	if (game->win == NULL)
 		return (0);
-	init_img(data);
-	mlx_loop_hook(data->mlx, &render, data);
-	mlx_hook(data->win, 2, 1L << 0, key_event, data);
-	mlx_hook(data->win, 17, 1L << 17, close_window, data);
-	mlx_loop(data->mlx);
+	init_img(game);
+	mlx_loop_hook(game->mlx, &render, game);
+	mlx_hook(game->win, 2, 1L << 0, key_event, game);
+	mlx_hook(game->win, 17, 1L << 17, close_window, game);
+	mlx_loop(game->mlx);
 	return (1);
 }
 
-static void	check_validity(t_data *data)
+static void	check_validity(t_game *game)
 {
-	duplicate_map(data);
-	floodfill(data->dmap, data->pc.pos.x, data->pc.pos.y);
-	if (!map_validity(data))
-		game_error(data, "Error in map validation\n");
-	else if (!info_validity(data->tex))
-		game_error(data, "Error in textures validation\n");
+	duplicate_map(game);
+	floodfill(game->dmap, game->pc.pos.x, game->pc.pos.y);
+	if (!map_validity(game))
+		game_error(game, "Error in map validation\n");
+	else if (!info_validity(game->tex))
+		game_error(game, "Error in textures validation\n");
 	else
 		ft_printf("File content is valid\n");
 }
 
 int	main(int argc, char **argv)
 {
-	t_data	data;
+	t_game	game;
 
 	if (argc != 2)
 	{
 		ft_printf("Error: one argument expected\n");
 		return (1);
 	}
-	init_data(&data);
-	if (!parse(&data, argv))
-		game_error(&data, "Error during parsing\n");
-	init_player(&data);
-	check_validity(&data);
-	if (!init_game(&data))
-		game_error(&data, "Error initializing game\n");
+	init_data(&game);
+	if (!parse(&game, argv))
+		game_error(&game, "Error during parsing\n");
+	init_player(&game);
+	check_validity(&game);
+	if (!init_game(&game))
+		game_error(&game, "Error initializing game\n");
 	return (0);
 }

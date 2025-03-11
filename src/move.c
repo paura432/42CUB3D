@@ -6,89 +6,62 @@
 /*   By: pau <pau@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 22:14:21 by pramos            #+#    #+#             */
-/*   Updated: 2025/02/17 15:41:15 by pau              ###   ########.fr       */
+/*   Updated: 2025/03/11 20:16:57 by pau              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-int	key_press(int key_code, t_game *game)
+static void	rotate(t_game *game, double speed)
 {
-    // game->map->color = 0x000000;
-	// draw_pixel(game, (int)game->map->player_x, (int)game->map->player_y, 4);
-	// draw_line_until_wall(game, 0x000000);
-	if (key_code == 100)
-		right(game);
-	if (key_code == 97)
-		left(game);
-	if (key_code == 119)
-		up(game);
-	if (key_code == 115)
-		down(game);
-	if (key_code == 65307)
+	double	aux_dir;
+	double	aux_plane;
+
+	aux_dir = game->pc.dir.x;
+	aux_plane = game->pc.plane.x;
+	game->pc.dir.x = game->pc.dir.x * cos(speed) - game->pc.dir.y * sin(speed);
+	game->pc.dir.y = aux_dir * sin(speed) + game->pc.dir.y * cos(speed);
+	game->pc.plane.x = game->pc.plane.x * cos(speed)
+		- game->pc.plane.y * sin(speed);
+	game->pc.plane.y = aux_plane * sin(speed)
+		+ game->pc.plane.y * cos(speed);
+}
+
+static void	move(t_game *game, double x, double y, char sign)
+{
+	if (sign == '+')
 	{
-		ft_printf("GAME FINISHED\n");
-		free_list(game);
+		if (game->dmap[(int)game->pc.pos.y][(int)(game->pc.pos.x + x)] != '1')
+			game->pc.pos.x += x;
+		if (game->dmap[(int)(game->pc.pos.y + y)][(int)game->pc.pos.x] != '1')
+			game->pc.pos.y += y;
 	}
-    // game->map->color = 0x00FF0000;
-	// draw_line_until_wall(game, 0x00FF00);
-	// draw_pixel(game, (int)game->map->player_x, (int)game->map->player_y, 4);
-    // draw_map(game);
+	else if (sign == '-')
+	{
+		if (game->dmap[(int)game->pc.pos.y][(int)(game->pc.pos.x - x)] != '1')
+			game->pc.pos.x -= x;
+		if (game->dmap[(int)(game->pc.pos.y - y)][(int)game->pc.pos.x] != '1')
+			game->pc.pos.y -= y;
+	}
+}
+
+int	key_event(int key, t_game *game)
+{
+	if (key == KEY_ESC)
+		close_window(game);
+	else if (key == KEY_W)
+		move(game, game->pc.dir.x * SPEED, game->pc.dir.y * SPEED, '+');
+	else if (key == KEY_S)
+		move(game, game->pc.dir.x * SPEED, game->pc.dir.y * SPEED, '-');
+	else if (key == KEY_A)
+		move(game, game->pc.plane.x * SPEED, game->pc.plane.y * SPEED, '-');
+	else if (key == KEY_D)
+		move(game, game->pc.plane.x * SPEED, game->pc.plane.y * SPEED, '+');
+	else if ((key == KEY_L && (game->pc.point == 'N' || game->pc.point == 'S'))
+		|| (key == KEY_R && (game->pc.point == 'E' || game->pc.point == 'W')))
+		rotate(game, -ROTATION);
+	else if ((key == KEY_L && (game->pc.point == 'E' || game->pc.point == 'W'))
+		|| (key == KEY_R && (game->pc.point == 'N' || game->pc.point == 'S')))
+		rotate(game, ROTATION);
 	return (0);
-}
-
-int check_collision(t_game *game, float new_x, float new_y)
-{
-    if (game->map->map[(int)(new_y) / 8][(int)(new_x) / 8] == '1' ||
-        game->map->map[(int)(new_y) / 8][(int)(new_x + 4) / 8] == '1' ||
-        game->map->map[(int)(new_y + 4) / 8][(int)(new_x) / 8] == '1' ||
-        game->map->map[(int)(new_y + 4) / 8][(int)(new_x + 4) / 8] == '1')
-        return (1);
-
-    return (0);
-}
-
-void right(t_game *game)
-{
-    game->ply->pa -= 0.1;
-    if (game->ply->pa < 0)
-        game->ply->pa += 2 * PI;
-    game->ply->pdx = cos(game->ply->pa) * 4;
-    game->ply->pdy = sin(game->ply->pa) * 4;
-}
-
-void left(t_game *game)
-{
-    game->ply->pa += 0.1;
-    if (game->ply->pa > 2 * PI)
-        game->ply->pa -= 2 * PI;
-    game->ply->pdx = cos(game->ply->pa) * 4;
-    game->ply->pdy = sin(game->ply->pa) * 4;
-}
-
-void up(t_game *game)
-{
-    float new_x;
-    float new_y;
-
-	new_x = game->map->player_x + game->ply->pdx;
-	new_y = game->map->player_y + game->ply->pdy;
-
-    if (!check_collision(game, new_x, game->map->player_y))
-        game->map->player_x = new_x;
-    if (!check_collision(game, game->map->player_x, new_y))
-        game->map->player_y = new_y;
-}
-
-void down(t_game *game)
-{
-    float new_x;
-    float new_y;
-
-	new_x = game->map->player_x - game->ply->pdx;
-	new_y = game->map->player_y - game->ply->pdy;
-    if (!check_collision(game, new_x, game->map->player_y))
-        game->map->player_x = new_x;
-    if (!check_collision(game, game->map->player_x, new_y))
-        game->map->player_y = new_y;
 }

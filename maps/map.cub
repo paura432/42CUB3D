@@ -1,7 +1,7 @@
-NO ./textures/muro.xpm
-SO ./textures/muro.xpm
-WE ./textures/muro.xpm
-EA ./textures/muro.xpm
+NO ./textures/wall1.xpm
+SO ./textures/wall2.xpm
+WE ./textures/wall3.xpm
+EA ./textures/wall4.xpm
 
 F 139,69,19
 C 0,0,255

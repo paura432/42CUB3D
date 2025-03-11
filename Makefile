@@ -1,7 +1,10 @@
 NAME = cub3d
 
-MY_SOURCES = src/cub3d.c src/read.c src/flood_fill.c src/free.c \
-			src/raycasting.c src/move.c src/draw.c src/render.c
+MY_SOURCES = src/cub3d.c src/data_initialisation.c src/info_validation.c \
+			 src/read.c src/parser_utils_2.c src/parser.c \
+			 src/parser_utils.c  src/utils.c \
+			 src/raycasting.c src/raycast_utils.c src/move.c src/utils_2.c src/render.c \
+
 MY_OBJECTS =  $(MY_SOURCES:.c=.o)
 
 CC = gcc -Wall -Wextra -Werror -g3 #-fsanitize=address
