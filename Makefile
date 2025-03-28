@@ -1,4 +1,4 @@
-NAME = cub3d
+NAME = cub3D
 
 MY_SOURCES = src/cub3d.c src/data_initialisation.c src/info_validation.c \
 			 src/read.c src/parser_utils_2.c src/parser.c \

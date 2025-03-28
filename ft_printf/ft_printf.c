@@ -65,21 +65,3 @@ int	ft_printf(char const *type, ...)
 	va_end (args);
 	return (len);
 }
-
-// int main()
-// {
-// 	int i;
-// 	char	*texto;
-
-// 	i = 0;
-// 	texto = "hola\0";
-// 	i = ft_printf(" funcion %c\n%s\n%p\n%d\n%i\n%u\n%x\n%X\n%%\n", 'a', texto, texto, 0, 5, 4, 27, 27);
-// 	ft_printf("%d\n", i);
-// 	ft_printf("%d\n", -2147483648);
-// 	ft_printf("%d\n", 2147483647);
-// 	i = printf(" funcion %c\n%s\n%p\n%d\n%i\n%u\n%x\n%X\n%%", 'a', texto, texto, 0, 5, 4, 27, 27);
-// 	printf("%d\n", i);
-// 	printf("%ld\n", -2147483648);
-// 	printf("%d", 2147483647);
-// 	return(0);
-// }

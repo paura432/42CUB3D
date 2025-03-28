@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-char	*ft_strchr_Gnl(char *str, int c)
+char	*ft_strchr_gnl(char *str, int c)
 {
 	while (*str != (char)c && *str != 0)
 		str++;
@@ -22,7 +22,7 @@ char	*ft_strchr_Gnl(char *str, int c)
 		return (0);
 }
 
-size_t	ft_strlen_Gnl(char *s)
+size_t	ft_strlen_gnl(char *s)
 {
 	size_t	i;
 
@@ -34,12 +34,12 @@ size_t	ft_strlen_Gnl(char *s)
 	return (i);
 }
 
-char	*ft_strdup_Gnl(char *s1)
+char	*ft_strdup_gnl(char *s1)
 {
 	char	*result;
 	int		i;
 
-	i = ft_strlen_Gnl(s1);
+	i = ft_strlen_gnl(s1);
 	result = (char *)malloc((i + 1) * sizeof(char));
 	if (!result)
 		return (0);
@@ -53,7 +53,7 @@ char	*ft_strdup_Gnl(char *s1)
 	return (result);
 }
 
-char	*ft_strjoin_Gnl(char *s1, char *s2)
+char	*ft_strjoin_gnl(char *s1, char *s2)
 {
 	int		i;
 	int		j;
@@ -61,15 +61,15 @@ char	*ft_strjoin_Gnl(char *s1, char *s2)
 
 	i = 0;
 	j = 0;
-	str = (char *)malloc((ft_strlen_Gnl(s1) + ft_strlen_Gnl(s2) + 1) * sizeof(char));
+	str = malloc((ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1) * sizeof(char));
 	if (!str)
 		return (0);
 	if (s1)
 	{
 		while (s1[i] != '\0')
 		{
-		str[i] = s1[i];
-		i++;
+			str[i] = s1[i];
+			i++;
 		}
 	}
 	while (s2[j] != '\0')
@@ -82,7 +82,7 @@ char	*ft_strjoin_Gnl(char *s1, char *s2)
 	return (str);
 }
 
-char	*ft_substr_Gnl(char *s, unsigned int start, size_t len)
+char	*ft_substr_gnl(char *s, unsigned int start, size_t len)
 {
 	char	*aux;
 	size_t	i;
@@ -90,10 +90,10 @@ char	*ft_substr_Gnl(char *s, unsigned int start, size_t len)
 	i = 0;
 	if (!s)
 		return (0);
-	if (ft_strlen_Gnl(s) <= start)
+	if (ft_strlen_gnl(s) <= start)
 		return (0);
-	if (ft_strlen_Gnl(&s[start]) < len)
-		len = ft_strlen_Gnl(&s[start]);
+	if (ft_strlen_gnl(&s[start]) < len)
+		len = ft_strlen_gnl(&s[start]);
 	aux = (char *)malloc(len + 1 * sizeof(char));
 	if (!aux)
 		return (0);

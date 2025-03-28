@@ -21,13 +21,13 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include  <fcntl.h>
+# include <fcntl.h>
 
 char	*get_next_line(int fd);
-size_t	ft_strlen_Gnl( char *s);
-char	*ft_strdup_Gnl(char *s1);
-char	*ft_strchr_Gnl(char *str, int c);
-char	*ft_strjoin_Gnl(char *s1, char *s2);
-char	*ft_substr_Gnl(char *s, unsigned int start, size_t len);
+size_t	ft_strlen_gnl( char *s);
+char	*ft_strdup_gnl(char *s1);
+char	*ft_strchr_gnl(char *str, int c);
+char	*ft_strjoin_gnl(char *s1, char *s2);
+char	*ft_substr_gnl(char *s, unsigned int start, size_t len);
 
 #endif
